@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -20,6 +17,7 @@ class SoCalShoppingOrderDaoTest {
 
     @Test
     void insertOrder() {
+        dao.deleteOrder(123L);
         SoCalShoppingOrder order = SoCalShoppingOrder.builder()
                 .orderStatus(0)
                 .orderNo("123")
