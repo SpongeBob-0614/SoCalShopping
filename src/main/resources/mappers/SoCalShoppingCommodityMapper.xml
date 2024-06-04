@@ -21,6 +21,17 @@
     from socal_shopping_commodity
     where commodity_id = #{commodityId,jdbcType=BIGINT}
   </select>
+  <select id="listCommoditiesByUserId" resultType="com.spongebob.socalshopping.db.po.SoCalShoppingCommodity">
+    select
+    <include refid="Base_Column_List" />
+    from socal_shopping_commodity
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <select id="listCommodities" resultType="com.spongebob.socalshopping.db.po.SoCalShoppingCommodity">
+    select
+    <include refid="Base_Column_List" />
+    from socal_shopping_commodity
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from socal_shopping_commodity
     where commodity_id = #{commodityId,jdbcType=BIGINT}

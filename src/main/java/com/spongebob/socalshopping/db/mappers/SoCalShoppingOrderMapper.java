@@ -14,4 +14,6 @@ public interface SoCalShoppingOrderMapper {
     int updateByPrimaryKeySelective(SoCalShoppingOrder record);
 
     int updateByPrimaryKey(SoCalShoppingOrder record);
+
+    SoCalShoppingOrder selectByOrderNo(String orderNo);
 }

@@ -1,5 +1,9 @@
 package com.spongebob.socalshopping.db.po;
+import lombok.Data;
+import lombok.Builder;
 
+@Data
+@Builder
 public class SoCalShoppingUser {
     private Long userId;
 
