@@ -33,4 +33,11 @@ public class SoCalShoppingOrderDaoImpl implements SoCalShoppingOrderDao {
     public int updateOrder(SoCalShoppingOrder order) {
         return mapper.updateByPrimaryKey(order);
     }
+
+    @Override
+    public int deleteOrder(long orderId) {
+        return mapper.deleteByPrimaryKey(orderId);
+    }
+
+
 }

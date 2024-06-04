@@ -1,6 +1,7 @@
 package com.spongebob.socalshopping.db.dao;
 
 import com.spongebob.socalshopping.db.po.SoCalShoppingOrder;
+import com.spongebob.socalshopping.db.po.SoCalShoppingUser;
 
 public interface SoCalShoppingOrderDao {
 
@@ -14,6 +15,9 @@ public interface SoCalShoppingOrderDao {
 
     //o 买家可以对订单进行付款
     int updateOrder(SoCalShoppingOrder order);
+
+    //删除order
+    int deleteOrder(long orderId);
 
     //o 买家可以按商品名称或者描述进行搜索
 
