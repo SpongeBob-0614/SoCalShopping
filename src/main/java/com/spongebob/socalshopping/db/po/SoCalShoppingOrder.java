@@ -1,7 +1,11 @@
 package com.spongebob.socalshopping.db.po;
 
 import java.util.Date;
+import lombok.Data;
+import lombok.Builder;
 
+@Data
+@Builder
 public class SoCalShoppingOrder {
     private Long orderId;
 
