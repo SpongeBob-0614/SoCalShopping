@@ -22,4 +22,7 @@ public interface SoCalShoppingCommodityDao {
     // 卖家/买家可以查看商品详情
     SoCalShoppingCommodity getCommodityDetails(long commodityId);
 
+    int deductStock(long commodityId);
+
+    int deductStockSP(long commodityId);
 }

@@ -32,6 +32,12 @@
     <include refid="Base_Column_List" />
     from socal_shopping_commodity
   </select>
+  <select id="deduckStockSP" parameterType="java.util.HashMap" statementType="CALLABLE">
+    CALL socal_shopping.deductStockSp(
+        #{commodityId,jdbcType=BIGINT,mode=IN},
+        #{res,jdbcType=INTEGER,mode=OUT}
+    )
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from socal_shopping_commodity
     where commodity_id = #{commodityId,jdbcType=BIGINT}
@@ -137,4 +143,10 @@
       lock_stock = #{lockStock,jdbcType=INTEGER}
     where commodity_id = #{commodityId,jdbcType=BIGINT}
   </update>
+    <update id="deduckStock">
+      update socal_shopping.socal_shopping_commodity
+      set available_stock = available_stock - 1
+      where available_stock > 0 and commodity_id=#{commodityId,jdbcType=BIGINT};
+    </update>
+
 </mapper>

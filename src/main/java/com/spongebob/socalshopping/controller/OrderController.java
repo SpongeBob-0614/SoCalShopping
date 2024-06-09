@@ -25,14 +25,25 @@ public class OrderController {
             @PathVariable("userId") String userId,
             @PathVariable("commodityId") String commodityId,
             Map<String, Object> resultMap){
-        SoCalShoppingOrder order = orderService.processOrder(Long.parseLong(commodityId), Long.parseLong(userId));
+
+        //1. 无任何优化 会导致超卖问题
+        //SoCalShoppingOrder order = orderService.processOrder(Long.parseLong(commodityId), Long.parseLong(userId));
+
+        //2. atomic操作 通过将查询和update两个操作合为一个操作解决超卖问题
+        //SoCalShoppingOrder order = orderService.processOrderOneSQL(Long.parseLong(commodityId), Long.parseLong(userId));
+
+        //3. StoredProcedures
+        //SoCalShoppingOrder order = orderService.processOrderOneSP(Long.parseLong(commodityId),Long.parseLong(userId));
+
+        //4. Redis
+        SoCalShoppingOrder order = orderService.processOrderRedis(Long.parseLong(commodityId),Long.parseLong(userId));
         String resultInfo = null;
         if(order != null){
             resultInfo = "Order created successfully, order info: " + order.getOrderNo();
             resultMap.put("orderNo", order.getOrderNo());
         }
         else{
-            resultInfo = "THe commodity is out of stock";
+            resultInfo = "The commodity is out of stock";
         }
         resultMap.put("resultInfo", resultInfo);
         return "order_result";

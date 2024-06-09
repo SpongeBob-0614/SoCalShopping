@@ -3,6 +3,7 @@ package com.spongebob.socalshopping.db.mappers;
 import com.spongebob.socalshopping.db.po.SoCalShoppingCommodity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SoCalShoppingCommodityMapper {
     int deleteByPrimaryKey(Long commodityId);
@@ -20,4 +21,8 @@ public interface SoCalShoppingCommodityMapper {
     List<SoCalShoppingCommodity> listCommoditiesByUserId(long userId);
 
     List<SoCalShoppingCommodity> listCommodities();
+
+    int deduckStock(long commodityId);
+
+    void deduckStockSP(Map<String, Object> map);
 }

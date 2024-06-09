@@ -6,7 +6,9 @@ import com.spongebob.socalshopping.db.po.SoCalShoppingCommodity;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class SoCalShoppingCommodityDaoImpl implements SoCalShoppingCommodityDao {
@@ -39,5 +41,20 @@ public class SoCalShoppingCommodityDaoImpl implements SoCalShoppingCommodityDao 
     public SoCalShoppingCommodity getCommodityDetails(long commodityId) {
 
         return mapper.selectByPrimaryKey(commodityId);
+    }
+
+    @Override
+    public int deductStock(long commodityId) {
+        return mapper.deduckStock(commodityId);
+    }
+
+    @Override
+    public int deductStockSP(long commodityId) { 
+        Map<String, Object> params = new HashMap<>();
+        params.put("commodityId", commodityId);
+        params.put("res",0);
+        mapper.deduckStockSP(params);
+        Object res = params.getOrDefault("res",0);
+        return (int) res;
     }
 }
