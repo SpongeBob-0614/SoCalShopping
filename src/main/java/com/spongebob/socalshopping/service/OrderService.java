@@ -150,6 +150,42 @@ public class OrderService {
 
     }
 
+    public SoCalShoppingOrder processOrderDistributedLock(long commodityId, long userId) {
+        String redisKey = "Lock_commodity:"+commodityId;
+        String requestId = UUID.randomUUID().toString();
+        Boolean getLock = redisService.tryDistributedLock(redisKey, requestId, 5000);
+        if(getLock){
+            int result = commodityDao.deductStock(commodityId);
+            SoCalShoppingOrder order = null;
+            if(result>0) {
+                SoCalShoppingCommodity commodity = commodityDao.getCommodityDetails(commodityId);
+                log.info("Process succesful for commodityId: " + commodityId);
+                order = SoCalShoppingOrder.builder()
+                        .userId(userId)
+                        .commodityId(commodityId)
+                        .orderNo(UUID.randomUUID().toString())
+                        .orderAmount(commodity.getPrice().longValue())
+                        .createTime(new Date())
+                        .orderStatus(1)
+                        //create order
+                        //0, invalid order, since no available stock
+                        //1, already create order, pending for payment
+                        //2, finishing payment
+                        //99, invalid after due to payment process overtime
+                        .build();
+                orderDao.insertOrder(order);
+
+            }
+            redisService.releaseLock(redisKey,requestId);
+            //更新库存
+            return order;
+        }
+        log.info("Process try again later for commodityId: " + commodityId);
+        return null;
+
+    }
+
+
     public SoCalShoppingOrder getOrderByOrderNo(String orderNum){
         return orderDao.queryOrderByOrderNo(orderNum);
     }

@@ -58,5 +58,30 @@ public class RedisService {
             return stockCount;
         }
     }
+
+    public Boolean tryDistributedLock(String lockKey, String requestId, int expireTime) {
+        Jedis resource = jedisPool.getResource();
+        //NX: 发现已经存在 返回Null
+        //PX: 有ParamDate
+        String result = resource.set(lockKey, requestId, "NX", "PX", expireTime);
+        resource.close();
+        if("OK".equals(result)){
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean releaseLock(String lockKey, String requestId){
+        Jedis resource = jedisPool.getResource();
+        String scripts =   "if redis.call('get', KEYS[1]) == ARGV[1]" +
+                " then return redis.call('del', KEYS[1])" +
+                " else return 0 end";
+        Long result = (Long) resource.eval(scripts, Collections.singletonList(lockKey), Collections.singletonList(requestId));
+        if(result == 1L){
+            return true;
+        }
+        return false;
+
+    }
 }
 

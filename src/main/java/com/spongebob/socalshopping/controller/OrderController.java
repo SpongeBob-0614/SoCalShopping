@@ -36,7 +36,11 @@ public class OrderController {
         //SoCalShoppingOrder order = orderService.processOrderOneSP(Long.parseLong(commodityId),Long.parseLong(userId));
 
         //4. Redis
-        SoCalShoppingOrder order = orderService.processOrderRedis(Long.parseLong(commodityId),Long.parseLong(userId));
+        //SoCalShoppingOrder order = orderService.processOrderRedis(Long.parseLong(commodityId),Long.parseLong(userId));
+
+        //5. Distributed lock (general)
+        SoCalShoppingOrder order = orderService.processOrderDistributedLock(Long.parseLong(commodityId), Long.parseLong(userId));
+
         String resultInfo = null;
         if(order != null){
             resultInfo = "Order created successfully, order info: " + order.getOrderNo();
