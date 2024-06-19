@@ -4,6 +4,7 @@ import com.spongebob.socalshopping.db.dao.SoCalShoppingCommodityDao;
 import com.spongebob.socalshopping.db.po.SoCalShoppingCommodity;
 import com.spongebob.socalshopping.db.po.SoCalShoppingOrder;
 import com.spongebob.socalshopping.service.OrderService;
+import com.spongebob.socalshopping.service.RedisService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,11 +21,20 @@ public class OrderController {
     @Resource
     SoCalShoppingCommodityDao commodityDao;
 
+    @Resource
+    RedisService redisService;
+
     @RequestMapping("/commodity/buy/{userId}/{commodityId}")
     public String buyCommodity(
             @PathVariable("userId") String userId,
             @PathVariable("commodityId") String commodityId,
-            Map<String, Object> resultMap){
+            Map<String, Object> resultMap) throws Exception {
+
+        //deny list check
+        if(redisService.isInDenyList(Long.parseLong(userId), Long.valueOf(commodityId))){
+            resultMap.put("resultInfo", "Each user have only one quote for this commodity");
+            return "order_result";
+        }
 
         //1. 无任何优化 会导致超卖问题
         //SoCalShoppingOrder order = orderService.processOrder(Long.parseLong(commodityId), Long.parseLong(userId));
@@ -39,10 +49,15 @@ public class OrderController {
         //SoCalShoppingOrder order = orderService.processOrderRedis(Long.parseLong(commodityId),Long.parseLong(userId));
 
         //5. Distributed lock (general)
-        SoCalShoppingOrder order = orderService.processOrderDistributedLock(Long.parseLong(commodityId), Long.parseLong(userId));
+        //SoCalShoppingOrder order = orderService.processOrderDistributedLock(Long.parseLong(commodityId), Long.parseLong(userId));
+
+        //6. Message queue
+        SoCalShoppingOrder order = orderService.processOrderRocketMQ(Long.parseLong(commodityId),Long.parseLong(userId));
 
         String resultInfo = null;
         if(order != null){
+            //Add deny list method
+            redisService.addToDenyList(Long.parseLong(userId), Long.parseLong(commodityId));
             resultInfo = "Order created successfully, order info: " + order.getOrderNo();
             resultMap.put("orderNo", order.getOrderNo());
         }

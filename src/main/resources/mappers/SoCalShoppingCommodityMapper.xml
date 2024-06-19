@@ -148,5 +148,10 @@
       set available_stock = available_stock - 1
       where available_stock > 0 and commodity_id=#{commodityId,jdbcType=BIGINT};
     </update>
+    <update id="revertStock">
+      update socal_shopping.socal_shopping_commodity
+      set available_stock = available_stock + 1
+      where available_stock > 0 and commodity_id=#{commodityId,jdbcType=BIGINT};
+    </update>
 
 </mapper>

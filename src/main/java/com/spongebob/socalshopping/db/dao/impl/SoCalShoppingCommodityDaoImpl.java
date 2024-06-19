@@ -57,4 +57,9 @@ public class SoCalShoppingCommodityDaoImpl implements SoCalShoppingCommodityDao 
         Object res = params.getOrDefault("res",0);
         return (int) res;
     }
+
+    @Override
+    public void revertStock(Long commodityId) {
+        mapper.revertStock(commodityId);
+    }
 }

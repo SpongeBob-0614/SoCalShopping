@@ -25,4 +25,6 @@ public interface SoCalShoppingCommodityDao {
     int deductStock(long commodityId);
 
     int deductStockSP(long commodityId);
+
+    void revertStock(Long commodityId);
 }

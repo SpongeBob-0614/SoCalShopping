@@ -1,9 +1,11 @@
 package com.spongebob.socalshopping.service;
 
+import com.alibaba.fastjson.JSON;
 import com.spongebob.socalshopping.db.dao.SoCalShoppingCommodityDao;
 import com.spongebob.socalshopping.db.dao.SoCalShoppingOrderDao;
 import com.spongebob.socalshopping.db.po.SoCalShoppingCommodity;
 import com.spongebob.socalshopping.db.po.SoCalShoppingOrder;
+import com.spongebob.socalshopping.service.mq.RocketMQService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,16 @@ public class OrderService {
     @Resource
     RedisService redisService;
 
+    @Resource
+    RocketMQService rocketMQService;
+
     public SoCalShoppingOrder processOrder(long commodityId, long userId){
         SoCalShoppingCommodity commodity = commodityDao.getCommodityDetails(commodityId);
         //check
         int availableStock = commodity.getAvailableStock();
         if(availableStock > 0){
             availableStock--;
-            log.info("Process succesful for commodityId: " + commodityId+", current available stock: "+ availableStock);
+            log.info("Process successful for commodityId: " + commodityId+", current available stock: "+ availableStock);
             SoCalShoppingOrder order = SoCalShoppingOrder.builder()
                     .userId(userId)
                     .commodityId(commodityId)
@@ -63,7 +68,7 @@ public class OrderService {
         if(availableStock > 0){
             int result = commodityDao.deductStock(commodityId);
             if(result>0) {
-                log.info("Process succesful for commodityId: " + commodityId + ", current available stock: " + availableStock);
+                log.info("Process successful for commodityId: " + commodityId + ", current available stock: " + availableStock);
                 SoCalShoppingOrder order = SoCalShoppingOrder.builder()
                         .userId(userId)
                         .commodityId(commodityId)
@@ -126,7 +131,7 @@ public class OrderService {
             int result = commodityDao.deductStock(commodityId);
             if(result>0) {
                 SoCalShoppingCommodity commodity = commodityDao.getCommodityDetails(commodityId);
-                log.info("Process succesful for commodityId: " + commodityId + ", current available stock: " + availableStock);
+                log.info("Process successful for commodityId: " + commodityId + ", current available stock: " + availableStock);
                 SoCalShoppingOrder order = SoCalShoppingOrder.builder()
                         .userId(userId)
                         .commodityId(commodityId)
@@ -181,6 +186,26 @@ public class OrderService {
             return order;
         }
         log.info("Process try again later for commodityId: " + commodityId);
+        return null;
+
+    }
+
+    public SoCalShoppingOrder processOrderRocketMQ(long commodityId, long userId) throws Exception {
+        String redisKey = "commodity:"+commodityId;
+        //check
+        long availableStock = redisService.deductStock(redisKey);
+        if(availableStock >= 0){
+            //produce message
+            SoCalShoppingOrder order = SoCalShoppingOrder.builder()
+                    .commodityId(commodityId)
+                    .userId(userId)
+                    .orderNo(UUID.randomUUID().toString())
+                    .build();
+            String msg = JSON.toJSONString(order);
+            rocketMQService.sendMessage("createOrder", msg);
+            return order;
+        }
+        log.info("Process order failed, no available stock, commodityId: " + commodityId);
         return null;
 
     }

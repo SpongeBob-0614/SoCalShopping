@@ -25,4 +25,6 @@ public interface SoCalShoppingCommodityMapper {
     int deduckStock(long commodityId);
 
     void deduckStockSP(Map<String, Object> map);
+
+    void revertStock(Long commodityId);
 }

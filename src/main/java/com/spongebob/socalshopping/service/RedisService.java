@@ -83,5 +83,36 @@ public class RedisService {
         return false;
 
     }
+
+    public void revertStock(String redisKey) {
+        Jedis resource = jedisPool.getResource();
+        resource.incr(redisKey);
+        resource.close();
+    }
+
+    public void addToDenyList(Long userId, Long commodityId){
+        Jedis resource = jedisPool.getResource();
+        String key = "denyList:"+userId;
+        resource.sadd(key, String.valueOf(commodityId));
+        resource.close();
+        log.info("Add userId: {} into denyList for commodityId: {}", userId, commodityId);
+    }
+
+    public void removeToDenyList(Long userId, Long commodityId){
+        Jedis resource = jedisPool.getResource();
+        String key = "denyList:"+userId;
+        resource.srem(key, String.valueOf(commodityId));
+        resource.close();
+        log.info("Remove userId: {} into denyList for commodityId: {}", userId, commodityId);
+    }
+
+    public boolean isInDenyList(Long userId, Long commodityId){
+        Jedis resource = jedisPool.getResource();
+        String key = "denyList:"+userId;
+        Boolean isInDenyList = resource.sismember(key, String.valueOf(commodityId));
+        resource.close();
+        log.info("userId: {}, commodityId {} is InDenyList result: {}", userId, commodityId, isInDenyList);
+        return isInDenyList;
+    }
 }
 
