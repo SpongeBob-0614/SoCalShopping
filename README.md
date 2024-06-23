@@ -65,11 +65,11 @@ Val:  E:\rocketmq-4.9.3\bin
 
 ### Elasticsearch
 
-Enter CMD go to Folder D:\elasticsearch-7.4.2\bin
+Enter CMD go to Folder E:\elasticsearch-7.4.2\bin
 type
 `elasticsearch`
 
-Enter CMD goto folder D:\kibana-7.4.2-windows-x86_64\kibana-7.4.2-windows-x86_64\bin
+Enter CMD goto folder E:\kibana-7.4.2-windows-x86_64\bin
 type
 `kibana.bat`
 visit http://127.0.0.1:5601/
