@@ -2,11 +2,9 @@ package com.spongebob.socalshopping.controller;
 
 import com.spongebob.socalshopping.db.dao.SoCalShoppingCommodityDao;
 import com.spongebob.socalshopping.db.po.SoCalShoppingCommodity;
+import com.spongebob.socalshopping.service.SearchService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,6 +15,10 @@ public class CommodityController {
 
     @Resource
     SoCalShoppingCommodityDao commodityDao;
+
+    @Resource
+    SearchService searchService;
+
     @GetMapping("/addItem")
     public String addItem(){
         return "add_commodity";
@@ -63,4 +65,14 @@ public class CommodityController {
         return "item_detail";
 
     }
+
+    @RequestMapping("/searchAction")
+    public String search(@RequestParam("keyword") String keyword,
+                         Map<String, Object> resultMap){
+
+        List<SoCalShoppingCommodity> soCalShoppingCommodities = searchService.searchCommodityDDB(keyword);
+        resultMap.put("itemList", soCalShoppingCommodities);
+        return "search_items";
+    }
+
 }

@@ -62,4 +62,10 @@ public class SoCalShoppingCommodityDaoImpl implements SoCalShoppingCommodityDao 
     public void revertStock(Long commodityId) {
         mapper.revertStock(commodityId);
     }
+
+    @Override
+    public List<SoCalShoppingCommodity> queryCommodityByKeyword(String keyword) {
+        
+        return mapper.queryCommodityByKeyword(keyword);
+    }
 }

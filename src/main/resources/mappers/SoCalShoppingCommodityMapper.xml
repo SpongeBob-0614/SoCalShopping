@@ -38,6 +38,11 @@
         #{res,jdbcType=INTEGER,mode=OUT}
     )
   </select>
+  <select id="queryCommodityByKeyword" resultType="com.spongebob.socalshopping.db.po.SoCalShoppingCommodity">
+    SELECT <include refid="Base_Column_List" />
+    FROM socal_shopping_commodity
+    where commodity_desc like #{keyword,jdbcType=VARCHAR};
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from socal_shopping_commodity
     where commodity_id = #{commodityId,jdbcType=BIGINT}
