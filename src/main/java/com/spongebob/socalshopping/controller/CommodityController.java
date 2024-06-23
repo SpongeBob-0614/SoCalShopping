@@ -2,6 +2,7 @@ package com.spongebob.socalshopping.controller;
 
 import com.spongebob.socalshopping.db.dao.SoCalShoppingCommodityDao;
 import com.spongebob.socalshopping.db.po.SoCalShoppingCommodity;
+import com.spongebob.socalshopping.service.ESService;
 import com.spongebob.socalshopping.service.SearchService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ public class CommodityController {
 
     @Resource
     SearchService searchService;
+
+    @Resource
+    ESService esService;
 
     @GetMapping("/addItem")
     public String addItem(){
@@ -45,6 +49,7 @@ public class CommodityController {
 
         resultMap.put("Item", commodity);
         commodityDao.insertCommodity(commodity);
+        searchService.addCommodityToES(commodity);
 
         return "add_commodity_success";
     }
@@ -69,8 +74,11 @@ public class CommodityController {
     @RequestMapping("/searchAction")
     public String search(@RequestParam("keyWord") String keyword,
                          Map<String, Object> resultMap){
+        //mysql database
+        //List<SoCalShoppingCommodity> soCalShoppingCommodities = searchService.searchCommodityDDB(keyword);
 
-        List<SoCalShoppingCommodity> soCalShoppingCommodities = searchService.searchCommodityDDB(keyword);
+        //elasticsearch
+        List<SoCalShoppingCommodity> soCalShoppingCommodities = esService.searchCommodities(keyword, 0, 10);
         resultMap.put("itemList", soCalShoppingCommodities);
         return "search_items";
     }
