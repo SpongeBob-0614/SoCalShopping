@@ -66,6 +66,6 @@ public class SoCalShoppingCommodityDaoImpl implements SoCalShoppingCommodityDao 
     @Override
     public List<SoCalShoppingCommodity> queryCommodityByKeyword(String keyword) {
         String keywordPattern = "%" + keyword + "%";
-        return mapper.queryCommodityByKeyword(keyword);
+        return mapper.queryCommodityByKeyword(keywordPattern);
     }
 }

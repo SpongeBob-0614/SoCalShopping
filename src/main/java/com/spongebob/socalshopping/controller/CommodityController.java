@@ -67,7 +67,7 @@ public class CommodityController {
     }
 
     @RequestMapping("/searchAction")
-    public String search(@RequestParam("keyword") String keyword,
+    public String search(@RequestParam("keyWord") String keyword,
                          Map<String, Object> resultMap){
 
         List<SoCalShoppingCommodity> soCalShoppingCommodities = searchService.searchCommodityDDB(keyword);
