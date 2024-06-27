@@ -62,5 +62,12 @@ Configuration 1.0//EN"
                enableSelectByExample="false"
                enableUpdateByExample="false"
                selectByExampleQueryId="false"/>
+        <table schema="" tableName="socal_shopping_sharding_order"
+               domainObjectName="SoCalShoppingOrder"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false"
+               selectByExampleQueryId="false"/>
     </context>
 </generatorConfiguration>

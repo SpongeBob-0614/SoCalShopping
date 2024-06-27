@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spongebob.socalshopping.db.mappers.SoCalShoppingOrderMapper">
+  <resultMap id="BaseResultMap" type="com.spongebob.socalshopping.db.po.SoCalShoppingOrder">
+    <id column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+    <result column="commodity_id" jdbcType="BIGINT" property="commodityId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, order_no, order_status, commodity_id, user_id, order_amount, create_time,
+    pay_time
+  </sql>
+  <insert id="insert" parameterType="com.spongebob.socalshopping.db.po.SoCalShoppingShardingOrder">
+    insert into socal_shopping_order (order_id, order_no, order_status,
+                                      commodity_id, user_id, order_amount,
+                                      create_time, pay_time)
+    values (#{orderId,jdbcType=BIGINT}, #{orderNo,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER},
+            #{commodityId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderAmount,jdbcType=DECIMAL},
+            #{createTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP})
+  </insert>
+</mapper>
