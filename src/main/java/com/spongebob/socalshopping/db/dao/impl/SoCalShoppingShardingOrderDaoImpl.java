@@ -1,0 +1,23 @@
+package com.spongebob.socalshopping.db.dao.impl;
+
+import com.spongebob.socalshopping.db.dao.SoCalShoppingShardingOrderDao;
+import com.spongebob.socalshopping.db.mappers.SoCalShoppingShardingOrderMapper;
+import com.spongebob.socalshopping.db.po.SoCalShoppingShardingOrder;
+
+import javax.annotation.Resource;
+
+public class SoCalShoppingShardingOrderDaoImpl implements SoCalShoppingShardingOrderDao {
+
+    @Resource
+    SoCalShoppingShardingOrderMapper orderMapper;
+
+    @Override
+    public int insertOrder(SoCalShoppingShardingOrder order) {
+        return orderMapper.insert(order);
+    }
+
+    @Override
+    public SoCalShoppingShardingOrder queryShardingOrder(Long orderId, Long userId) {
+        return orderMapper.queryOrder(orderId,userId);
+    }
+}

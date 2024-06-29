@@ -5,7 +5,9 @@ import com.spongebob.socalshopping.db.po.SoCalShoppingShardingOrder;
 
 public interface SoCalShoppingShardingOrderMapper {
 
-    int insetOrder(SoCalShoppingShardingOrder record);
+    int insert(SoCalShoppingShardingOrder record);
 
-    SoCalShoppingOrder queryOrder(Long orderId, Long userId);
+    SoCalShoppingShardingOrder queryOrder(Long orderId, Long userId);
+
+    int insertSharding(SoCalShoppingShardingOrder order);
 }
