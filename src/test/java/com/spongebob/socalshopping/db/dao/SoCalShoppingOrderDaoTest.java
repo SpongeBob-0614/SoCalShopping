@@ -17,6 +17,7 @@ class SoCalShoppingOrderDaoTest {
 
     @Test
     void insertOrder() {
+        dao.deleteOrder(123L);
         SoCalShoppingOrder order = SoCalShoppingOrder.builder()
                 .orderNo("123")
                 .orderId(123L)
