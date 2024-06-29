@@ -3,9 +3,11 @@ package com.spongebob.socalshopping.db.dao.impl;
 import com.spongebob.socalshopping.db.dao.SoCalShoppingShardingOrderDao;
 import com.spongebob.socalshopping.db.mappers.SoCalShoppingShardingOrderMapper;
 import com.spongebob.socalshopping.db.po.SoCalShoppingShardingOrder;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
+@Repository
 public class SoCalShoppingShardingOrderDaoImpl implements SoCalShoppingShardingOrderDao {
 
     @Resource

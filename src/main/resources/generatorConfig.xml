@@ -36,7 +36,7 @@ Configuration 1.0//EN"
         <!-- targetPackage：mapper 接口生成的位置 -->
         <javaClientGenerator type="XMLMAPPER"
 
-                             targetPackage="com.spongebob.socalshoppi   ng.db.mappers"
+                             targetPackage="com.spongebob.socalshopping.db.mappers"
                              targetProject="./src/main/java">
             <!-- enableSubPackages:是否让 schema 作为包的后缀 -->
             <property name="enableSubPackages" value="true" />
@@ -56,13 +56,6 @@ Configuration 1.0//EN"
                enableUpdateByExample="false"
                selectByExampleQueryId="false"/>
         <table schema="" tableName="socal_shopping_order"
-               domainObjectName="SoCalShoppingOrder"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               enableUpdateByExample="false"
-               selectByExampleQueryId="false"/>
-        <table schema="" tableName="socal_shopping_sharding_order"
                domainObjectName="SoCalShoppingOrder"
                enableCountByExample="false"
                enableDeleteByExample="false"

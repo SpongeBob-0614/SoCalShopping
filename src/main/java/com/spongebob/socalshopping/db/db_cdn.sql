@@ -1,4 +1,4 @@
-socal_shopping_commoditysocal_shopping_commodityDROP schema IF EXISTS `socal_shopping_1`;
+DROP schema IF EXISTS `socal_shopping_1`;
 CREATE schema socal_shopping_1;
 USE socal_shopping_1;
 DROP TABLE IF EXISTS `socal_shopping_sharding_order_1`;
